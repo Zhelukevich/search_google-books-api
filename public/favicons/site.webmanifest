@@ -1,6 +1,6 @@
 {
-    "name": "\u042d\u043a\u043e\u043c\u0430\u0448\u0438\u043d\u044b",
-    "short_name": "\u042d\u043a\u043e\u043c\u0430\u0448\u0438\u043d\u044b",
+    "name": "Books",
+    "short_name": "Books",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
