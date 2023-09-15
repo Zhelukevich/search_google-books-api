@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '@hooks/ReduxToolkit-hooks';
 import { IItems } from '@store/slice/apiGoogleBooksSlice';
 import { useParams } from 'react-router-dom';
+import { Container } from '@components/Container';
+
+import style from './bookPage.scss';
 
 export default function BookPage() {
   const { bookID } = useParams();
@@ -18,60 +21,61 @@ export default function BookPage() {
   }, [dataBook, bookID]);
 
   return (
-    <div>
-      <div>
-        {
-          volumeBook?.volumeInfo?.imageLinks?.thumbnail ? (
-            <img src={volumeBook?.volumeInfo?.imageLinks?.thumbnail} alt={volumeBook?.volumeInfo?.title} />
-          ) : (
-            <div>
-              <span>?????????</span>
-            </div>
-          )
-        }
+    <Container>
+      <div className={style.wrapper}>
+        <div className={style.wrapper__img}>
+          {
+            volumeBook?.volumeInfo?.imageLinks?.thumbnail ? (
+              <img src={volumeBook?.volumeInfo?.imageLinks?.thumbnail} alt={volumeBook?.volumeInfo?.title} />
+            ) : (
+              <div>
+                <span>?????????</span>
+              </div>
+            )
+          }
 
+        </div>
+
+        <div className={style.wrapper__info}>
+          {
+            volumeBook?.volumeInfo?.categories ? (
+              <span>{volumeBook?.volumeInfo?.categories?.join('/ ')}</span>
+            ) : (
+              <></>
+            )
+          }
+          <br />
+
+          <h1>{volumeBook?.volumeInfo?.title}</h1>
+          <br />
+
+
+          {
+            volumeBook?.volumeInfo?.authors ? (
+              <span>{volumeBook?.volumeInfo?.authors?.join(', ')}</span>
+            ) : (
+              <></>
+            )
+          }
+
+          <br />
+
+          {
+            volumeBook?.volumeInfo?.description || volumeBook?.volumeInfo?.subtitle ? (
+              <>
+                {volumeBook?.volumeInfo?.description && (
+                  <span>{volumeBook.volumeInfo.description}</span>
+                )}
+                {volumeBook?.volumeInfo?.subtitle && (
+                  <span>{volumeBook.volumeInfo.subtitle}</span>
+                )}
+              </>
+            ) : (
+              <></>
+            )
+          }
+        </div>
       </div>
-
-      <div>
-        {
-          volumeBook?.volumeInfo?.categories ? (
-            <span>{volumeBook?.volumeInfo?.categories?.join('/ ')}</span>
-          ) : (
-            <></>
-          )
-        }
-        <br />
-
-        <h1>{volumeBook?.volumeInfo?.title}</h1>
-        <br />
-
-
-        {
-          volumeBook?.volumeInfo?.authors ? (
-            <span>{volumeBook?.volumeInfo?.authors?.join(', ')}</span>
-          ) : (
-            <></>
-          )
-        }
-
-        <br />
-
-        {
-          volumeBook?.volumeInfo?.description || volumeBook?.volumeInfo?.subtitle ? (
-            <>
-              {volumeBook?.volumeInfo?.description && (
-                <span>{volumeBook.volumeInfo.description}</span>
-              )}
-              {volumeBook?.volumeInfo?.subtitle && (
-                <span>{volumeBook.volumeInfo.subtitle}</span>
-              )}
-            </>
-          ) : (
-            <></>
-          )
-        }
-      </div>
-    </div>
-
+    </Container>
   );
 }

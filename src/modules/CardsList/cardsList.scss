@@ -1,3 +1,14 @@
+.messages {
+  padding-top: 40px;
+  width: 100%;
+
+  span {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+  }
+}
+
 .wrapper_content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

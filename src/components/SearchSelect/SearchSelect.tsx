@@ -18,8 +18,8 @@ interface ISearchSelectProps {
 
 export function SearchSelect({ htmlFor, name, id, label, selectedValue, data, onChange }: ISearchSelectProps) {
   return (
-    <div>
-      <label htmlFor={htmlFor}>{label}</label>
+    <div className={style.wrapper}>
+      <label className={style.label} htmlFor={htmlFor}>{label}</label>
       <select
         className={style.select}
         onChange={onChange}

@@ -28,7 +28,16 @@ export function CardsList() {
   return (
     <section>
       <Container>
-        <span>{apiGoogleBooksState.data?.totalItems}</span>
+        <div className={style.messages}>
+          {
+            apiGoogleBooksState.error ? (
+              <span>Error: {apiGoogleBooksState.error}</span>
+            ) : (
+              <span>{apiGoogleBooksState.data?.totalItems} книг по запросу</span>
+            )
+          }
+        </div>
+
         <div className={style.wrapper_content}>
           {book?.length === 0 && (
             <div style={{ textAlign: 'center' }}>
