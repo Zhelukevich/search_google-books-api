@@ -30,9 +30,6 @@
 
 # Скрипты
 
-Запускает приложение в dev mode.\
-[http://localhost:3000](http://localhost:3000) - открыть для просмотра в браузере.
-
 ## Запуск в Docker container
 
 `docker-compose build`<br/>
@@ -47,3 +44,6 @@
 
 `npm install`<br/>
 `npm run dev`<br/>
+
+Запускает приложение в dev mode.\
+[http://localhost:3000](http://localhost:3000) - открыть для просмотра в браузере.
