@@ -28,20 +28,23 @@
 
 ---
 
-## Скрипты
+# Скрипты
 
 Запускает приложение в dev mode.\
 [http://localhost:3000](http://localhost:3000) - открыть для просмотра в браузере.
 
-# Запуск в Docker container
+## Запуск в Docker container
 
-`docker-compose build`  
-`docker-compose up`
+### `docker-compose build`
 
-`docker build -t search_google-books .`
-`docker run -p 3000:3000 search_google-books`
+### `docker-compose up`
 
-# Запуск npm
+#### `docker build -t search_google-books .`
 
-`npm install`
-`npm run dev`
+#### `docker run -p 3000:3000 search_google-books`
+
+## Запуск npm
+
+### `npm install`
+
+### `npm run dev`
