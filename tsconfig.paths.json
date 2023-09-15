@@ -10,7 +10,19 @@
       ],
       "@store/*": [
         "./store/*"
-      ]
+      ],
+      "@pages/*": [
+        "./pages/*"
+      ],
+      "@modules/*": [
+        "./modules/*"
+      ],
+      "@Images/*": [
+        "./Images/*"
+      ],
+      "@style/*": [
+        "./style/*"
+      ],
     }
   }
 }
