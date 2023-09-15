@@ -35,16 +35,15 @@
 
 ## Запуск в Docker container
 
-### `docker-compose build`
+`docker-compose build`
+`docker-compose up`
 
-### `docker-compose up`
+или
 
-#### `docker build -t search_google-books .`
-
-#### `docker run -p 3000:3000 search_google-books`
+`docker build -t search_google-books .`
+`docker run -p 3000:3000 search_google-books`
 
 ## Запуск npm
 
-### `npm install`
-
-### `npm run dev`
+`npm install`
+`npm run dev`
