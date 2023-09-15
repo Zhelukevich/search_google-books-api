@@ -20,6 +20,11 @@
     font-size: 72px;
     color: #fff;
     margin-bottom: 20px;
+    text-align: center;
+
+    @media screen and (max-width: 576px) {
+      font-size: 48px;
+    }
   }
 }
 

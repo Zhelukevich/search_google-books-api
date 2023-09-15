@@ -28,7 +28,7 @@ export function SearchSelect({ htmlFor, name, id, label, selectedValue, data, on
         id={id}
       >
         {
-          data.map(el => (
+          data?.map(el => (
             <option
               key={v4()}
               value={el.value}>

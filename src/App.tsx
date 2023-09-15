@@ -20,16 +20,16 @@ function App() {
       category: apiGoogleBooksState.category,
       sorting: apiGoogleBooksState.sorting,
       search: apiGoogleBooksState.search,
-      maxResults: apiGoogleBooksState.maxResults,
+      startIndex: apiGoogleBooksState.startIndex,
     }));
-  }, [dispatch, apiGoogleBooksState.category, apiGoogleBooksState.sorting, apiGoogleBooksState.search, apiGoogleBooksState.maxResults]);
+  }, [dispatch, apiGoogleBooksState.category, apiGoogleBooksState.sorting, apiGoogleBooksState.search, apiGoogleBooksState.startIndex]);
 
   return (
     <Suspense fallback={<></>}>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
-          <Route path=":book" element={<BookPage />} />
+          <Route path=":bookID" element={<BookPage />} />
         </Route>
       </Routes>
     </Suspense>

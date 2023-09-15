@@ -5,58 +5,82 @@ import axios from 'axios';
 import { RootState } from '../store';
 
 const apiKey = process.env.REACT_APP_GOOGLE_BOOKS_API_KEY;
+const maxResults = 30;
+const urlApi = 'https://www.googleapis.com/books/v1/volumes';
 
 interface FetchGoogleBooksParams {
   category?: string;
   sorting?: string;
   search?: string;
-  maxResults?: number;
+  startIndex?: number;
 }
 
 export const fetchGoogleBooks = createAsyncThunk(
   'googleBooks/fetchGoogleBooks',
-  async ({ category, sorting, search, maxResults }: FetchGoogleBooksParams) => {
+  async ({ category, sorting, search, startIndex }: FetchGoogleBooksParams) => {
 
     try {
-      const resp = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=subject:${category}+${search}&orderBy=${sorting}&maxResults=${maxResults}&key=${apiKey}`);
+      const resp = await axios.get(urlApi, {
+        params: {
+          q: `subject:${category} ${search}`,
+          orderBy: sorting,
+          startIndex: startIndex,
+          maxResults: maxResults,
+          key: apiKey,
+        },
+      });
 
-      return resp.data.items;
+      return resp.data;
 
     } catch (error) {
       console.error('Error:', error);
+      throw error;
     }
   });
 
-interface IGoogleBooks {
-  title: string;
-  img: string;
+
+export interface IItems {
   id: string;
   volumeInfo: {
-    categories: string,
     title: string,
-    imageLinks: string,
+    subtitle: string,
+    authors: string[],
+    categories: string[],
+    description: string
+    imageLinks: {
+      thumbnail: string,
+      smallThumbnail: string,
+    };
   }
 }
 
+interface IGoogleBooks {
+  totalItems: number;
+  items: IItems[];
+}
+
 interface GoogleBooksState {
-  items: IGoogleBooks[],
+  data: IGoogleBooks | null,
+  items: IItems[],
   category: string,
   sorting: string,
   search: string,
-  maxResults: number,
+  startIndex: number,
   loading: boolean,
   error: string | undefined
 }
 
 const initialState: GoogleBooksState = {
+  data: null,
   items: [],
-  category: 'all',
+  category: '',
   sorting: 'relevance',
-  maxResults: 30,
+  startIndex: 0,
   search: '*',
   loading: false,
   error: '',
 };
+
 
 export const ApiGoogleBooksSlice = createSlice({
   name: 'ApiGoogleBooks',
@@ -71,8 +95,14 @@ export const ApiGoogleBooksSlice = createSlice({
     searchBook: (state, action: PayloadAction<string>) => {
       state.search = action.payload;
     },
-    maxResultsBook: (state, action: PayloadAction<number>) => {
-      state.maxResults = action.payload;
+    increaseStartIndex: (state, action: PayloadAction<number>) => {
+      const totalItems = state.data?.totalItems ?? 0;
+      if (state.items.length < totalItems) {
+        state.startIndex += action.payload;
+        if (state.items.length < totalItems) {
+          state.items = state.items.concat(state.data?.items || []);
+        }
+      }
     },
   },
 
@@ -80,20 +110,21 @@ export const ApiGoogleBooksSlice = createSlice({
     builder.addCase(fetchGoogleBooks.pending, state => {
       state.loading = true;
     });
-    builder.addCase(fetchGoogleBooks.fulfilled, (state, actions) => {
+    builder.addCase(fetchGoogleBooks.fulfilled, (state, action) => {
       state.loading = false;
-      state.items = actions.payload;
+      state.data = action.payload;
+      state.items = state.data?.items || [];
       state.error = '';
     });
-    builder.addCase(fetchGoogleBooks.rejected, (state, actions) => {
+    builder.addCase(fetchGoogleBooks.rejected, (state, action) => {
       state.loading = false;
-      state.items = [];
-      state.error = actions.error.message;
+      state.data = null;
+      state.error = action.error.message;
     });
   },
 });
 
-export const { categoryBook, sortingBook, searchBook, maxResultsBook } = ApiGoogleBooksSlice.actions;
+export const { categoryBook, sortingBook, searchBook, increaseStartIndex } = ApiGoogleBooksSlice.actions;
 export const apiGoogleBooks = (state: RootState) => state.apiGoogleBooks;
 export default ApiGoogleBooksSlice.reducer;
 

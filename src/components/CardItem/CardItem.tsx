@@ -2,13 +2,15 @@ import React from 'react';
 
 import { Link } from 'react-router-dom';
 
+import { v4 } from 'uuid';
+
 import style from './cardItem.scss';
 
 interface ICardItemProps {
   title: string;
-  categories: string;
+  categories: string[] | string;
   img: string;
-  author: string;
+  author: string[];
   link: string;
 }
 
@@ -27,9 +29,13 @@ export function CardItem({ title, categories, img, author, link }: ICardItemProp
         <h2>
           {title}
         </h2>
-        <samp>
-          {author}
-        </samp>
+        <ul>
+          {
+            author?.map(el => (
+              <li key={v4()}>{el}</li>
+            ))
+          }
+        </ul>
       </div>
 
       <Link

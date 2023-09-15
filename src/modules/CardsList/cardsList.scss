@@ -5,3 +5,25 @@
   gap: 20px;
   padding: 40px 0;
 }
+
+.wrapper_btn {
+  margin-bottom: 20px;
+
+  .btn {
+    display: block;
+    padding: 8px 20px;
+    border-radius: 5px;
+    background-color: rgb(97, 97, 97);
+    font-weight: 700;
+    color: #fff;
+    margin: 0 auto;
+    border: 1px solid transparent;
+    transition: all 0.3s ease-in;
+  }
+
+  :hover {
+    background-color: #fff;
+    color: rgb(97, 97, 97);
+    border: 1px solid rgb(97, 97, 97);
+  }
+}

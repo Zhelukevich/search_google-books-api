@@ -6,33 +6,29 @@ import { useAppDispatch, useAppSelector } from '@hooks/ReduxToolkit-hooks';
 
 import { Container } from '@components/Container';
 
-import { apiGoogleBooks, maxResultsBook, sortingBook } from '@store/slice/apiGoogleBooksSlice';
+import { IItems, apiGoogleBooks, increaseStartIndex } from '@store/slice/apiGoogleBooksSlice';
 
 import style from './cardsList.scss';
 
 
 export function CardsList() {
-  const data = useAppSelector(state => state.apiGoogleBooks.data);
   const dispatch = useAppDispatch();
-
-  const [book, setBook] = useState(data);
+  const apiGoogleBooksState = useAppSelector(apiGoogleBooks);
+  const [book, setBook] = useState<IItems[] | undefined>(apiGoogleBooksState.items);
 
   useEffect(() => {
-    if (data !== undefined) {
-      setBook([...data]);
-    }
-  }, [data]);
+    setBook(apiGoogleBooksState.items);
+    localStorage.setItem('googleBooksData', JSON.stringify(book));
+  }, [apiGoogleBooksState.items, book]);
 
-
-  // const dispatch = useAppDispatch();
-
-  const handlerClick = () => {
-    // dispatch(maxResultsBook(50));
+  const handleLoadMore = () => {
+    dispatch(increaseStartIndex(30));
   };
 
   return (
     <section>
       <Container>
+        <span>{apiGoogleBooksState.data?.totalItems}</span>
         <div className={style.wrapper_content}>
           {book?.length === 0 && (
             <div style={{ textAlign: 'center' }}>
@@ -42,16 +38,25 @@ export function CardsList() {
 
           {book?.map(card => (
             <CardItem
-              key={card.id}
-              title={card.volumeInfo.title}
-              categories={card.volumeInfo.categories}
-              img={card.volumeInfo.imageLinks?.thumbnail}
-              author={card.smallThumbnail.authors[0]}
-              link={card.id} />
+              key={card?.id}
+              title={card?.volumeInfo?.title}
+              categories={card?.volumeInfo?.categories?.[0]}
+              author={card?.volumeInfo?.authors}
+              img={card?.volumeInfo?.imageLinks?.thumbnail}
+              link={card?.id} />
           ))}
         </div>
       </Container>
-      <button onClick={handlerClick}>Load more</button>
+      <div className={style.wrapper_btn}>
+        {
+          apiGoogleBooksState.loading ? (
+            <div>Loading...</div>
+          ) : (
+            <button className={style.btn} onClick={handleLoadMore}>Load more</button>
+          )
+        }
+      </div>
+
     </section>
   );
 }
